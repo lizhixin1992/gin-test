@@ -2,6 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/lizhixin1992/gin-test/models"
+	"log"
 	"net/http"
 )
 
@@ -51,4 +53,27 @@ func AddUserRoutesV1(rg *gin.RouterGroup) {
 			"msg":  "success",
 		})
 	})
+
+	//xxxxxx?a=xxxx&b=xxxxx
+	users.GET("/save", func(context *gin.Context) {
+		var user models.User
+		if context.ShouldBind(&user) == nil {
+			log.Println("====== &= ======")
+			log.Println(user.Name)
+			log.Println(user.Address)
+		}
+		context.String(http.StatusOK, "Success")
+	})
+
+	//Content-Type:application/json
+	users.POST("/save/json", func(context *gin.Context) {
+		var user models.User
+		if context.ShouldBindJSON(&user) == nil {
+			log.Println("====== JSON ======")
+			log.Println(user.Name)
+			log.Println(user.Address)
+		}
+		context.String(http.StatusOK, "Success")
+	})
+
 }
