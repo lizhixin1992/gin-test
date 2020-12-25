@@ -7,11 +7,11 @@ import (
 )
 
 func AddSysUserV1(rg *gin.RouterGroup) {
+	apiController := api.NewSysUserController()
 	group := rg.Group("/sys/user")
-
 	group.GET("/:id", func(context *gin.Context) {
 		id := context.Param("id")
-		result := api.GetSysUserById(id)
+		result := apiController.GetSysUserById(id)
 		context.JSON(http.StatusOK, gin.H{
 			"code": "3",
 			"msg":  "success",
