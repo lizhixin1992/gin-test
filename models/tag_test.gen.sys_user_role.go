@@ -1,9 +1,10 @@
-package	models	
-import (	
-"fmt"	
-"context"	
-"gorm.io/gorm"	
-)	
+package models
+
+import (
+	"context"
+	"fmt"
+	"gorm.io/gorm"
+)
 
 type _SysUserRoleMgr struct {
 	*_BaseMgr
@@ -15,7 +16,7 @@ func SysUserRoleMgr(db *gorm.DB) *_SysUserRoleMgr {
 		panic(fmt.Errorf("SysUserRoleMgr need init by db"))
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	return &_SysUserRoleMgr{_BaseMgr: &_BaseMgr{DB: db.Table("sys_user_role"), isRelated: globalIsRelated,ctx:ctx,cancel:cancel,timeout:-1}}
+	return &_SysUserRoleMgr{_BaseMgr: &_BaseMgr{DB: db.Table("sys_user_role"), isRelated: globalIsRelated, ctx: ctx, cancel: cancel, timeout: -1}}
 }
 
 // GetTableName get sql table name.获取数据库名字
@@ -26,14 +27,14 @@ func (obj *_SysUserRoleMgr) GetTableName() string {
 // Get 获取
 func (obj *_SysUserRoleMgr) Get() (result SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Find(&result).Error
-	
+
 	return
 }
 
 // Gets 获取批量结果
 func (obj *_SysUserRoleMgr) Gets() (results []*SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Find(&results).Error
-	
+
 	return
 }
 
@@ -49,7 +50,6 @@ func (obj *_SysUserRoleMgr) WithRoleID(roleID int64) Option {
 	return optionFunc(func(o *options) { o.query["role_id"] = roleID })
 }
 
-
 // GetByOption 功能选项模式获取
 func (obj *_SysUserRoleMgr) GetByOption(opts ...Option) (result SysUserRole, err error) {
 	options := options{
@@ -60,7 +60,7 @@ func (obj *_SysUserRoleMgr) GetByOption(opts ...Option) (result SysUserRole, err
 	}
 
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where(options.query).Find(&result).Error
-	
+
 	return
 }
 
@@ -74,51 +74,45 @@ func (obj *_SysUserRoleMgr) GetByOptions(opts ...Option) (results []*SysUserRole
 	}
 
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where(options.query).Find(&results).Error
-	
+
 	return
 }
+
 //////////////////////////enume case ////////////////////////////////////////////
 
-
-// GetFromUserID 通过user_id获取内容 用户ID 
+// GetFromUserID 通过user_id获取内容 用户ID
 func (obj *_SysUserRoleMgr) GetFromUserID(userID int64) (results []*SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("user_id = ?", userID).Find(&results).Error
-	
+
 	return
 }
 
 // GetBatchFromUserID 批量唯一主键查找 用户ID
 func (obj *_SysUserRoleMgr) GetBatchFromUserID(userIDs []int64) (results []*SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("user_id IN (?)", userIDs).Find(&results).Error
-	
+
 	return
 }
- 
-// GetFromRoleID 通过role_id获取内容 角色ID 
+
+// GetFromRoleID 通过role_id获取内容 角色ID
 func (obj *_SysUserRoleMgr) GetFromRoleID(roleID int64) (results []*SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id = ?", roleID).Find(&results).Error
-	
+
 	return
 }
 
 // GetBatchFromRoleID 批量唯一主键查找 角色ID
 func (obj *_SysUserRoleMgr) GetBatchFromRoleID(roleIDs []int64) (results []*SysUserRole, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id IN (?)", roleIDs).Find(&results).Error
-	
+
 	return
 }
- 
- //////////////////////////primary index case ////////////////////////////////////////////
- 
- // FetchByPrimaryKey primay or index 获取唯一内容
- func (obj *_SysUserRoleMgr) FetchByPrimaryKey(userID int64 ,roleID int64 ) (result SysUserRole, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("user_id = ? AND role_id = ?", userID , roleID).Find(&result).Error
-	
+
+//////////////////////////primary index case ////////////////////////////////////////////
+
+// FetchByPrimaryKey primay or index 获取唯一内容
+func (obj *_SysUserRoleMgr) FetchByPrimaryKey(userID int64, roleID int64) (result SysUserRole, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("user_id = ? AND role_id = ?", userID, roleID).Find(&result).Error
+
 	return
 }
- 
-
- 
-
-	
-

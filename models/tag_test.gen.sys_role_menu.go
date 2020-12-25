@@ -1,9 +1,10 @@
-package	models	
-import (	
-"fmt"	
-"context"	
-"gorm.io/gorm"	
-)	
+package models
+
+import (
+	"context"
+	"fmt"
+	"gorm.io/gorm"
+)
 
 type _SysRoleMenuMgr struct {
 	*_BaseMgr
@@ -15,7 +16,7 @@ func SysRoleMenuMgr(db *gorm.DB) *_SysRoleMenuMgr {
 		panic(fmt.Errorf("SysRoleMenuMgr need init by db"))
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	return &_SysRoleMenuMgr{_BaseMgr: &_BaseMgr{DB: db.Table("sys_role_menu"), isRelated: globalIsRelated,ctx:ctx,cancel:cancel,timeout:-1}}
+	return &_SysRoleMenuMgr{_BaseMgr: &_BaseMgr{DB: db.Table("sys_role_menu"), isRelated: globalIsRelated, ctx: ctx, cancel: cancel, timeout: -1}}
 }
 
 // GetTableName get sql table name.获取数据库名字
@@ -26,14 +27,14 @@ func (obj *_SysRoleMenuMgr) GetTableName() string {
 // Get 获取
 func (obj *_SysRoleMenuMgr) Get() (result SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Find(&result).Error
-	
+
 	return
 }
 
 // Gets 获取批量结果
 func (obj *_SysRoleMenuMgr) Gets() (results []*SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Find(&results).Error
-	
+
 	return
 }
 
@@ -49,7 +50,6 @@ func (obj *_SysRoleMenuMgr) WithMenuID(menuID int64) Option {
 	return optionFunc(func(o *options) { o.query["menu_id"] = menuID })
 }
 
-
 // GetByOption 功能选项模式获取
 func (obj *_SysRoleMenuMgr) GetByOption(opts ...Option) (result SysRoleMenu, err error) {
 	options := options{
@@ -60,7 +60,7 @@ func (obj *_SysRoleMenuMgr) GetByOption(opts ...Option) (result SysRoleMenu, err
 	}
 
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where(options.query).Find(&result).Error
-	
+
 	return
 }
 
@@ -74,51 +74,45 @@ func (obj *_SysRoleMenuMgr) GetByOptions(opts ...Option) (results []*SysRoleMenu
 	}
 
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where(options.query).Find(&results).Error
-	
+
 	return
 }
+
 //////////////////////////enume case ////////////////////////////////////////////
 
-
-// GetFromRoleID 通过role_id获取内容 角色ID 
+// GetFromRoleID 通过role_id获取内容 角色ID
 func (obj *_SysRoleMenuMgr) GetFromRoleID(roleID int64) (results []*SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id = ?", roleID).Find(&results).Error
-	
+
 	return
 }
 
 // GetBatchFromRoleID 批量唯一主键查找 角色ID
 func (obj *_SysRoleMenuMgr) GetBatchFromRoleID(roleIDs []int64) (results []*SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id IN (?)", roleIDs).Find(&results).Error
-	
+
 	return
 }
- 
-// GetFromMenuID 通过menu_id获取内容 菜单ID 
+
+// GetFromMenuID 通过menu_id获取内容 菜单ID
 func (obj *_SysRoleMenuMgr) GetFromMenuID(menuID int64) (results []*SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("menu_id = ?", menuID).Find(&results).Error
-	
+
 	return
 }
 
 // GetBatchFromMenuID 批量唯一主键查找 菜单ID
 func (obj *_SysRoleMenuMgr) GetBatchFromMenuID(menuIDs []int64) (results []*SysRoleMenu, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("menu_id IN (?)", menuIDs).Find(&results).Error
-	
+
 	return
 }
- 
- //////////////////////////primary index case ////////////////////////////////////////////
- 
- // FetchByPrimaryKey primay or index 获取唯一内容
- func (obj *_SysRoleMenuMgr) FetchByPrimaryKey(roleID int64 ,menuID int64 ) (result SysRoleMenu, err error) {
-	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id = ? AND menu_id = ?", roleID , menuID).Find(&result).Error
-	
+
+//////////////////////////primary index case ////////////////////////////////////////////
+
+// FetchByPrimaryKey primay or index 获取唯一内容
+func (obj *_SysRoleMenuMgr) FetchByPrimaryKey(roleID int64, menuID int64) (result SysRoleMenu, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("role_id = ? AND menu_id = ?", roleID, menuID).Find(&result).Error
+
 	return
 }
- 
-
- 
-
-	
-
