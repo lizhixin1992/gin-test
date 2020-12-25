@@ -61,6 +61,7 @@ func InitRoute() *gin.Engine {
 	v1 := router.Group("/v1")
 	AddUserRoutesV1(v1)
 	AddSearchRoutesV1(v1)
+	AddSysUserV1(v1)
 
 	v2 := router.Group("/v2")
 	AddSearchRoutesV2(v2)

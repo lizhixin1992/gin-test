@@ -1,20 +1,19 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/lizhixin1992/gin-test/conf"
-	"log"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"sync"
 )
 
 var (
-	masterEngine *sql.DB
+	masterEngine *gorm.DB
 	lock         sync.Mutex
 )
 
-func InstanceMaster() *sql.DB {
+func InstanceMaster() *gorm.DB {
 	if masterEngine != nil {
 		return masterEngine
 	}
@@ -28,21 +27,12 @@ func InstanceMaster() *sql.DB {
 	}
 
 	c := conf.MasterDbConf
-	driverSource := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8",
+	driverSource := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true",
 		c.UserName, c.Password, c.Host, c.Port, c.DbName)
 
-	db, err := sql.Open(conf.DriverName, driverSource)
+	db, err := gorm.Open(mysql.Open(driverSource), &gorm.Config{})
 	if err != nil {
-		panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
-	}
-	//defer db.Close()
-
-	// Open doesn't open a connection. Validate DSN data:
-	err = db.Ping()
-	if err != nil {
-		panic(err.Error()) // proper error handling instead of panic in your app
-	} else {
-		log.Println("db open is success")
+		panic(err.Error())
 	}
 
 	masterEngine = db
