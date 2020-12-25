@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"github.com/lizhixin1992/gin-test/database"
 	"github.com/lizhixin1992/gin-test/models"
 	"strconv"
@@ -16,11 +17,14 @@ func NewSysUserController() *SysUserController {
 	}
 }
 
-func (c *SysUserController) GetSysUserById(id string) (result models.SysUser) {
+func (c *SysUserController) GetSysUserById(id string) (result models.SysUser, err error) {
 	int64, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		return models.SysUser{}
+		return models.SysUser{}, errors.New("id is error")
 	}
-	sysUser, _ := c.Service.GetFromUserID(int64)
-	return sysUser
+	result, err1 := c.Service.GetFromUserID(int64)
+	if err1 != nil || result.UserID == 0 {
+		return models.SysUser{}, errors.New("not have data")
+	}
+	return result, nil
 }
