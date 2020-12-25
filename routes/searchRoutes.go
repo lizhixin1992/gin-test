@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func AddSearchRoutesV1(rg *gin.RouterGroup)  {
+func AddSearchRoutesV1(rg *gin.RouterGroup) {
 	search := rg.Group("/search")
 
 	//普通的路由请求
@@ -26,8 +26,7 @@ func AddSearchRoutesV1(rg *gin.RouterGroup)  {
 	})
 }
 
-
-func AddSearchRoutesV2(rg *gin.RouterGroup)  {
+func AddSearchRoutesV2(rg *gin.RouterGroup) {
 	search := rg.Group("/search")
 
 	//普通的路由请求

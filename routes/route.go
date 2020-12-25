@@ -57,7 +57,6 @@ func InitRoute() *gin.Engine {
 	//})
 	//return router
 
-
 	router := gin.Default()
 	v1 := router.Group("/v1")
 	AddUserRoutesV1(v1)
