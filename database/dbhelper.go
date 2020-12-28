@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/plugin/dbresolver"
 	"sync"
+	"time"
 )
 
 var (
@@ -43,12 +44,22 @@ func InstanceMaster() *gorm.DB {
 	driverSource2 := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true",
 		c.UserName, c.Password, c.Host, c.Port, "tag_test_2")
 
-	db.Use(dbresolver.Register(dbresolver.Config{
-		Sources:  []gorm.Dialector{mysql.Open(driverSource)},
+	db.Use(
+		dbresolver.Register(dbresolver.Config{
+		////默认该db为Sources（主库）
+		//Sources:  []gorm.Dialector{mysql.Open(driverSource)},
+		//配置从库
 		Replicas: []gorm.Dialector{mysql.Open(driverSource1), mysql.Open(driverSource2)},
 		// sources/replicas 负载均衡策略
-		Policy: dbresolver.RandomPolicy{},
-	}))
+		Policy: dbresolver.RandomPolicy{}}).
+			//连接池里面的连接最大空闲时长
+			SetConnMaxIdleTime(5 * time.Minute).
+			//连接池里面的连接最大存活时长
+			SetConnMaxLifetime(10 * time.Hour).
+			//连接池里最大空闲连接数
+			SetMaxIdleConns(15).
+			//连接池最多同时打开的连接数
+			SetMaxOpenConns(50))
 
 	masterEngine = db
 	return masterEngine
