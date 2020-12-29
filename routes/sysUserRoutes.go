@@ -39,7 +39,8 @@ func AddSysUserV1(rg *gin.RouterGroup) {
 			sysUser.LoginDate = time.Now()
 			sysUser.CreateTime = time.Now()
 			sysUser.UpdateTime = time.Now()
-			err := apiController.SaveSysUser(sysUser)
+			//todo:类似新增，修改操作对象，要向下传该对象的地址
+			err := apiController.SaveSysUser(&sysUser)
 			if err != nil {
 				context.JSON(http.StatusOK, gin.H{
 					"code": "1001",
