@@ -9,9 +9,16 @@ var GlobalConf = New()
 
 func New() *viper.Viper {
 	v := viper.New()
-	v.SetConfigName("GlobalConf")
-	v.SetConfigType("toml")
+	////toml格式
+	//v.SetConfigName("GlobalConf")
+	//v.SetConfigType("toml")
+	//v.AddConfigPath("./conf/")
+
+	//yml格式
+	v.SetConfigName("config_test")
+	v.SetConfigType("yaml")
 	v.AddConfigPath("./conf/")
+
 	err := v.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
