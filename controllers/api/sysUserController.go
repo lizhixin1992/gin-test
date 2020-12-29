@@ -30,7 +30,8 @@ func (c *SysUserController) GetSysUserById(id string) (result models.SysUser, er
 }
 
 func (c *SysUserController) SaveSysUser(sysUser models.SysUser) (err error) {
-	return c.Service.Save(sysUser).Error
+	//todo:此处要设置为&sysUser，不能设置为sysUser，其他类似
+	return c.Service.Create(&sysUser).Error
 }
 
 func (c *SysUserController) GetListByIds(userIDs []int64) (results []*models.SysUser, err error) {
