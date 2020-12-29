@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/lizhixin1992/gin-test/conf"
 	"github.com/lizhixin1992/gin-test/routes"
 	"io"
 	"log"
@@ -19,7 +20,7 @@ func main() {
 	gin.DisableConsoleColor()
 
 	// 记录到文件。
-	f, _ := os.Create("gin.log")
+	f, _ := os.Create(conf.GlobalConf.GetString("service.logPath"))
 	//gin.DefaultWriter = io.MultiWriter(f)
 
 	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
@@ -28,9 +29,10 @@ func main() {
 	//设置路由
 	router := routes.InitRoute()
 
+	port := conf.GlobalConf.GetString("service.port")
 	//配置服务端口和设置路由
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + port,
 		Handler: router,
 	}
 
