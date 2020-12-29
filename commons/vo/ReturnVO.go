@@ -8,47 +8,35 @@ import (
 type returnData struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 func SetResponse(context *gin.Context, code int, message string, data interface{}) *gin.Context {
-	context.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  message,
-		"data": data,
-	})
+	ret := returnData{Code: code, Message: message, Data: data}
+	context.JSON(http.StatusOK, ret)
 	return context
 }
 
 func SetResponseSuccessData(context *gin.Context, data interface{}) *gin.Context {
-	context.JSON(http.StatusOK, gin.H{
-		"code": "0",
-		"msg":  "success",
-		"data": data,
-	})
+	ret := returnData{Code: 0, Message: "success", Data: data}
+	context.JSON(http.StatusOK, ret)
 	return context
 }
 
 func SetResponseSuccess(context *gin.Context) *gin.Context {
-	context.JSON(http.StatusOK, gin.H{
-		"code": "0",
-		"msg":  "success",
-	})
+	ret := returnData{Code: 0, Message: "success"}
+	context.JSON(http.StatusOK, ret)
 	return context
 }
 
 func SetResponseOperateFail(context *gin.Context) *gin.Context {
-	context.JSON(http.StatusOK, gin.H{
-		"code": "1001",
-		"msg":  "method error",
-	})
+	ret := returnData{Code: 1001, Message: "method error"}
+	context.JSON(http.StatusOK, ret)
 	return context
 }
 
 func SetResponseDataFail(context *gin.Context) *gin.Context {
-	context.JSON(http.StatusOK, gin.H{
-		"code": "1002",
-		"msg":  "data error",
-	})
+	ret := returnData{Code: 1002, Message: "data error"}
+	context.JSON(http.StatusOK, ret)
 	return context
 }
